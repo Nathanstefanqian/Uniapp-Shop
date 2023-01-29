@@ -1,5 +1,8 @@
 <template>
 	<view>
+		<view class="search-box">
+			<my-search @click="gotoSearch"></my-search>
+		</view>
 		<swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" :circular="true">
 			<swiper-item v-for="(item,index) in swiperList" :key="index">
 				<navigator class="swiper-item" :url="'/subpkg/goods_detail/goods_detail?goods_id='+item.goods_id">
@@ -12,7 +15,7 @@
 				<image :src="item.image_src" class="nav-img"></image>
 			</view>
 		</view>
-		<view class="floot-list">
+		<view class="floor-list">
 			<view class="floor-item" v-for="(item,index) in floorList" :key="index">
 				<!-- 楼层标题区域 -->
 				<image :src="item.floor_title.image_src" class="floor-title"></image>
@@ -37,6 +40,7 @@
 			</view>
 		</view>
 	</view>
+	</view>
 </template>
 
 <script>
@@ -55,7 +59,6 @@
 			this.getSwiperList()
 			this.getNavList()
 			this.getFloorList()
-			console.log(111)
 		},
 		methods: {
 			async getSwiperList() {
@@ -88,7 +91,11 @@
 				if (item.name === '分类') {
 					uni.switchTab({ url: '/pages/cate/cate' })
 				}
+			},
+			gotoSearch() {
+				uni.navigateTo({ url: '/subpkg/search/search' })
 			}
+
 
 		}
 	}
@@ -131,5 +138,11 @@
 	.floor-img-box {
 		display: flex;
 		padding-left: 10rpx;
+	}
+
+	.search-box {
+		position: sticky;
+		top: 0;
+		z-index: 999;
 	}
 </style>
