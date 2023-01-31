@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { $http } from '@escook/request-miniprogram'
-
+import store from './store/store.js'
 uni.$http = $http
 // 配置请求根路径
 $http.baseUrl = 'https://api-hmugo-web.itheima.net'
@@ -31,5 +31,5 @@ Vue.config.productionTip = false
 
 App.mpType = 'app'
 
-const app = new Vue({ ...App })
+const app = new Vue({ ...App, store })
 app.$mount()

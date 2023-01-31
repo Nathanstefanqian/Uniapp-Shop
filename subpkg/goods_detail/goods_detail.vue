@@ -19,7 +19,7 @@
 				</view>
 			</view>
 			<!-- 运费 -->
-			<view class="yf">快递：免运费</view>
+			<view class="yf">快递：免运费 -- {{cart.length}}</view>
 		</view>
 		<rich-text :nodes="goods_info.goods_introduce"></rich-text>
 		<view class="goods_nav">
@@ -35,6 +35,8 @@
 </template>
 
 <script>
+	import { mapState, mapMutations, mapGetters } from 'vuex'
+
 	export default {
 		data() {
 			return {
@@ -61,11 +63,31 @@
 				]
 			}
 		},
+		watch: {
+			// 1. 监听 total 值的变化，通过第一个形参得到变化后的新值
+			total: {
+				handler(newVal) {
+					const findResult = this.options.find(x => x.text === '购物车')
+					if (findResult) {
+						findResult.info = newVal
+					}
+				},
+				immediate: true
+			}
+
+		},
+		computed: {
+			// 调用 mapState 方法，把 m_cart 模块中的 cart 数组映射到当前页面中，作为计算属性来使用
+			// ...mapState('模块的名称', ['要映射的数据名称1', '要映射的数据名称2'])
+			...mapState('m_cart', ['cart']),
+			...mapGetters('m_cart', ['total'])
+		},
 		onLoad(options) {
 			const goods_id = options.goods_id
 			this.getGoodsDetail(goods_id)
 		},
 		methods: {
+			...mapMutations('m_cart', ['addToCart']),
 			async getGoodsDetail(goods_id) {
 				const { data: res } = await uni.$http.get('/api/public/v1/goods/detail', { goods_id })
 				if (res.meta.status !== 200) return uni.$showMsg()
@@ -84,9 +106,27 @@
 			onClick(e) {
 				if (e.content.text === '购物车') {
 					// 切换到购物车页面
-					uni.switchTab({
-						url: '/pages/cart/cart'
-					})
+					uni.switchTab({ url: '/pages/cart/cart' })
+				}
+			},
+			// 右侧按钮的点击事件处理函数
+			buttonClick(e) {
+				// 1. 判断是否点击了 加入购物车 按钮
+				if (e.content.text === '加入购物车') {
+
+					// 2. 组织一个商品的信息对象
+					const goods = {
+						goods_id: this.goods_info.goods_id, // 商品的Id
+						goods_name: this.goods_info.goods_name, // 商品的名称
+						goods_price: this.goods_info.goods_price, // 商品的价格
+						goods_count: 1, // 商品的数量
+						goods_small_logo: this.goods_info.goods_small_logo, // 商品的图片
+						goods_state: true // 商品的勾选状态
+					}
+
+					// 3. 通过 this 调用映射过来的 addToCart 方法，把商品信息对象存储到购物车中
+					this.addToCart(goods)
+
 				}
 			}
 
