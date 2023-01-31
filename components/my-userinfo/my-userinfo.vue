@@ -1,6 +1,5 @@
 <template>
 	<view class="my-userinfo-container">
-
 		<!-- 头像昵称区域 -->
 		<view class="top-box">
 			<image :src="userinfo.avatarUrl" class="avatar"></image>
@@ -138,52 +137,52 @@
 				margin-top: 10px;
 			}
 		}
-	}
 
-	.panel-list {
-		padding: 0 10px;
-		position: relative;
-		top: -10px;
+		.panel-list {
+			padding: 0 10px;
+			position: relative;
+			top: -10px;
 
-		.panel {
-			background-color: white;
-			border-radius: 3px;
-			margin-bottom: 8px;
+			.panel {
+				background-color: white;
+				border-radius: 3px;
+				margin-bottom: 8px;
 
-			.panel-title {
-				line-height: 45px;
-				padding-left: 10px;
-				font-size: 15px;
-				border-bottom: 1px solid #f4f4f4;
-			}
+				.panel-title {
+					line-height: 45px;
+					padding-left: 10px;
+					font-size: 15px;
+					border-bottom: 1px solid #f4f4f4;
+				}
 
-			.panel-body {
-				display: flex;
-				justify-content: space-around;
-
-				.panel-item {
+				.panel-list-item {
+					height: 45px;
 					display: flex;
-					flex-direction: column;
+					justify-content: space-between;
 					align-items: center;
-					justify-content: space-around;
-					font-size: 13px;
-					padding: 10px 0;
+					font-size: 15px;
+					padding: 0 10px;
+				}
 
-					.icon {
-						width: 35px;
-						height: 35px;
+				.panel-body {
+					display: flex;
+					justify-content: space-around;
+
+					.panel-item {
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						justify-content: space-around;
+						font-size: 13px;
+						padding: 10px 0;
+
+						.icon {
+							width: 35px;
+							height: 35px;
+						}
 					}
 				}
 			}
 		}
-	}
-
-	.panel-list-item {
-		height: 45px;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		font-size: 15px;
-		padding: 0 10px;
 	}
 </style>

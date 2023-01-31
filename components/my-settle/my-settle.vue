@@ -34,6 +34,7 @@
 			...mapGetters('m_cart', ['checkedCount', 'total', 'checkedGoodsAmount']),
 			...mapGetters('m_user', ['addstr']),
 			...mapState('m_user', ['token']),
+			...mapState('m_cart', ['cart']),
 			isFullCheck() { return this.total === this.checkedCount },
 		},
 		methods: {
@@ -110,6 +111,7 @@
 				}
 				// 1.2 发起请求创建订单
 				const { data: res } = await uni.$http.post('/api/public/v1/my/orders/create', orderInfo)
+				console.log('这里需要写一个获得订单token的mock', res)
 				if (res.meta.status !== 200) return uni.$showMsg('创建订单失败！')
 				// 1.3 得到服务器响应的“订单编号”
 				const orderNumber = res.message.order_number
@@ -129,13 +131,22 @@
 				if (err) return uni.$showMsg('订单未支付！')
 				// 3.3 完成了支付，进一步查询支付的结果
 				const { data: res3 } = await uni.$http.post(
-				'/api/public/v1/my/orders/chkOrder', { order_number: orderNumber })
+					'/api/public/v1/my/orders/chkOrder', { order_number: orderNumber })
 				// 3.4 检测到订单未支付
 				if (res3.meta.status !== 200) return uni.$showMsg('订单未支付！')
 				// 3.5 检测到订单支付完成
 				uni.showToast({
 					title: '支付完成！',
 					icon: 'success'
+				})
+			},
+			// 展示倒计时的提示消息
+			showTips(n) {
+				uni.showToast({
+					icon: 'none',
+					title: '请登录后再结算！' + n + '秒之后自动跳转到登录页',
+					mask: true,
+					duration: 1500
 				})
 			}
 		}

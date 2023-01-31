@@ -21,11 +21,12 @@
 			...mapState('m_user', ['redirectInfo']),
 		},
 		methods: {
-			...mapMutations('m_user', ['updateUserInfo', 'updateToken']),
+			...mapMutations('m_user', ['updateUserInfo', 'updateToken', ['updateRedirectInfo']]),
 			getUserInfo(e) {
 				// 判断是否获取用户信息成功
+				console.log(e)
 				if (e.detail.errMsg === 'getUserInfo:fail auth deny') return uni.$showMsg('您取消了登录授权！')
-
+				else uni.$showMsg('获取detail成功！')
 				// 获取用户信息成功， e.detail.userInfo 就是用户的基本信息
 
 				//将用户的基本信息存储到 vuex 中
@@ -36,10 +37,12 @@
 			},
 			// 调用登录接口，换取永久的 token
 			async getToken(info) {
+
 				// 调用微信登录接口
 				const [err, res] = await uni.login().catch(err => err)
+				console.log(res)
 				// 判断是否 uni.login() 调用失败
-				if (err || res.errMsg !== 'login:ok') return uni.$showError('登录失败！')
+				if (res.errMsg !== 'login:ok') return uni.$showError('登录失败1！')
 
 				// 准备参数对象
 				const query = {
@@ -51,11 +54,12 @@
 				}
 
 				// 换取 token
-				const { data: loginResult } = await uni.$http.post('/api/public/v1/users/wxlogin', query)
-				if (loginResult.meta.status !== 200) return uni.$showMsg('登录失败！')
-				uni.$showMsg('登录成功')
+				// const { data: loginResult } = await uni.$http.post('/api/public/v1/users/wxlogin', query)
+				// console.log(loginResult)
+				// if (loginResult.meta.status !== 200) return uni.$showMsg('登录失败！')
+				// uni.$showMsg('登录成功')
 				// 2. 更新 vuex 中的 token
-				this.updateToken(loginResult.message.token)
+				this.updateToken('ajvjfnvjvnjv')
 				this.navigateBack()
 			},
 			navigateBack() {
