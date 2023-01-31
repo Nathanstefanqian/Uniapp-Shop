@@ -23,12 +23,25 @@
 			}
 		},
 		data() {
-			return {}
+			return { seconds: 3 }
 		},
 		methods: {
 			searchBoxHandler() {
 				//触发外界通过@click绑定的click事件处理函数
 				this.$emit('click')
+			},
+			showTips(n) {
+				// 调用 uni.showToast() 方法，展示提示消息
+				uni.showToast({
+					// 不展示任何图标
+					icon: 'none',
+					// 提示的消息
+					title: '请登录后再结算！' + n + ' 秒后自动跳转到登录页',
+					// 为页面添加透明遮罩，防止点击穿透
+					mask: true,
+					// 1.5 秒后自动消失
+					duration: 1500
+				})
 			}
 		}
 	}
